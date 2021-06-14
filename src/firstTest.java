@@ -65,24 +65,52 @@ public class firstTest extends coreTestCase {
         SearchPageObject.waitForBackButtonToDisappear();
     }
     @Test
-    public void testCompareArticleTitle(){
+    public void testCompareButtonTitle(){
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.skipConfig();
+        SearchPageObject.clickForNavbarFixButton();
+
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        String button_title = ArticlePageObject.getArticleButtonTitle();
+
+        Assert.assertEquals("We see unexpected title",
+                "ВОЙТИ В ВИКИПЕДИЮ",
+                button_title);
+    }
+
+    @Test
+    public void testSwipeArticle(){
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.skipConfig();
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.swipeToTopicTitle("Изображение дня");
+
+    }
+
+    @Test
+    public void testAmountOfNotEmptySearch(){
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
         SearchPageObject.skipConfig();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("язык программирования");
-        SearchPageObject.clickForTitleImage();
-        SearchPageObject.clickForBackSearch();
+        int amount_of_search_results = SearchPageObject.getAmountOfFoundArticles();
 
+        Assert.assertTrue(
+                "We found too few results",
+                amount_of_search_results>0
+        );
+    }
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String article_title = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals("We see unexpected title",
-                "язык программирования",
-                article_title);
-
-
+    @Test
+    public void testAmountOfEmptySearch(){
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.skipConfig();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("qraydh");
+        SearchPageObject.waitForEmptyResultLabel();
+        SearchPageObject.assertThereIsNotResultOfSearch();
     }
 
 

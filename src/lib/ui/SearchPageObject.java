@@ -10,7 +10,10 @@ public class SearchPageObject extends MainPageObject{
         SEARCH_INPUT = "//*[@resource-id = 'org.wikipedia:id/search_src_text']",
         SEARCH_BACK_BUTTON = "//*[@class='android.widget.ImageButton']",
         SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='{SUBSTRING}']",
-        TITLE_IMAGE = "//*[@resource-id = 'org.wikipedia:id/view_page_header_image']";
+        TITLE_IMAGE = "//*[@resource-id = 'org.wikipedia:id/view_page_header_image']",
+        FIX_BUTTON = "//android.widget.FrameLayout[@content-desc='Правки']",
+        SEARCH_RESULT_LOCATOR = "//*[@resource-id = 'org.wikipedia:id/page_list_item_title']",
+        SEARCH_EMPTY_RESULT_LABEL = "//*[@resource-id='org.wikipedia:id/results_text'][@text='Ничего не найдено']";
 
 
     public SearchPageObject(AppiumDriver driver) {
@@ -51,5 +54,23 @@ public class SearchPageObject extends MainPageObject{
     }
     public void clickForTitleImage(){
         this.waitForElementAndClick(By.xpath(TITLE_IMAGE), "Cannot find and click image",5 );
+    }
+    public void clickForNavbarFixButton(){
+        this.waitForElementAndClick(By.xpath(FIX_BUTTON),"Cannot find and click cancel button",5);
+    }
+
+    public int getAmountOfFoundArticles(){
+        this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_LOCATOR),"Cannot find anything by the request", 15
+        );
+        return this.getAmountOfElement(By.xpath(SEARCH_RESULT_LOCATOR));
+    }
+
+    public void waitForEmptyResultLabel(){
+        this.waitForElementPresent(By.xpath(SEARCH_EMPTY_RESULT_LABEL), "Cannot find empty result label", 15);
+    }
+
+    public void assertThereIsNotResultOfSearch(){
+        this.assertElementNotPresent(By.xpath(SEARCH_RESULT_LOCATOR), "We supposed to find any result");
     }
 }
