@@ -1,32 +1,22 @@
 package lib;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
 import junit.framework.TestCase;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.net.URL;
 
 public class coreTestCase extends TestCase {
 
     protected AppiumDriver driver;
-    private static String AppiumUrl = "http://127.0.0.1:4723/wd/hub";
+    protected Platform Platform;
+
 
     @Override
     protected void setUp() throws Exception {
 
         super.setUp();
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+        this.Platform = new Platform();
+        driver = this.Platform.getDriver();
 
-        capabilities.setCapability("platformName","Android");
-        capabilities.setCapability("deviceName","HUAWEI HRY-LX1");
-        capabilities.setCapability("platformVersion","10");
-        capabilities.setCapability("automationName","Appium");
-        capabilities.setCapability("appPackage","org.wikipedia");
-        capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","C:/Users/yurch/Desktop/appiumAutomation/apks/org.wikipedia_50353_apps.evozi.com.apk");
-
-        driver = new AndroidDriver(new URL(AppiumUrl), capabilities);
     }
 
     @Override
@@ -36,4 +26,5 @@ public class coreTestCase extends TestCase {
         super.tearDown();
         driver.quit();
     }
+
 }

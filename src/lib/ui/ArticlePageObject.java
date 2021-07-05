@@ -13,7 +13,7 @@ public class ArticlePageObject extends MainPageObject{
         super(driver);
     }
 
-    private static String getResultSearchElement(String substring){
+    private String getResultSearchElement(String substring){
         return TOPIC_TITLE.replace("{SUBSTRING}",substring);
     }
 
